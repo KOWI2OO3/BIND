@@ -3,14 +3,17 @@
 
 void MyTest() {
     ByteWriter* writer = createByteWriter(20);
-    writeByte(writer, 0b0111101u);
+    writeByte(writer, (byte)0b0111101u);
 
     ByteReader* reader = createReader(writer);
     destroyWriter(writer);
 
-    assert(readByte(reader) == 0b0111101u);
+    assert(readByte(reader) == (byte)0b0111101u);
+    destroyReader(reader);
 }
 
-void main() {
+int main() {
     MyTest();
+    
+    return 0;
 }
