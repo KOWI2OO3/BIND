@@ -101,7 +101,7 @@ char* readString(ByteReader* reader) {
             // Reallocate
             count *= 2;
             char* tmp = calloc(count, sizeof(char));
-            strcpy_s(tmp, strlen(result), result);
+            strcpy(tmp, result);
             free(result);
             result = tmp;
         }
