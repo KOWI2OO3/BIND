@@ -3,8 +3,10 @@
 #include <math.h>
 #include "bufferhelper.h"
 
+#define CHAR_BIT 8
+
 void writeVarInt(ByteWriter* writer, uint64_t value) {
-    byte bits = (byte) ceil(log2(value + 1));
+    byte bits = (byte) ceil(log2((double)(value + 1)));
     writeByte(writer, bits);
 
     for(byte i = 0; i < bits; i++) {
@@ -25,7 +27,7 @@ uint64_t readVarInt(ByteReader* reader) {
 
 void writeBoolean(ByteWriter* writer, bool value) {
     writeBit(writer, value);
-} 
+}
 
 bool readBoolean(ByteReader* reader) {
     return readBit(reader);
@@ -75,7 +77,7 @@ double readDouble(ByteReader* reader) {
     udouble result = { .d = 0.0f };
     uint32_t bits = sizeof(double) * CHAR_BIT;
 
-    for(int i = 0; i < bits; i++)
+    for(uint32_t i = 0; i < bits; i++)
         result.u |= ((uint64_t) readBit(reader)) << i;
 
     return result.d;
@@ -99,7 +101,7 @@ char* readString(ByteReader* reader) {
             // Reallocate
             count *= 2;
             char* tmp = calloc(count, sizeof(char));
-            strcpy(tmp, result);
+            strcpy_s(tmp, strlen(result), result);
             free(result);
             result = tmp;
         }
