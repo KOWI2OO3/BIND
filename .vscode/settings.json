@@ -3,6 +3,7 @@
     "files.associations": {
         "stdio.h": "c",
         "bytebuffer.h": "c",
-        "assert.h": "c"
+        "assert.h": "c",
+        "bufferhelper.h": "c"
     }
 }
