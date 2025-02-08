@@ -2,6 +2,7 @@
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "files.associations": {
         "stdio.h": "c",
-        "bytebuffer.h": "c"
+        "bytebuffer.h": "c",
+        "assert.h": "c"
     }
 }
