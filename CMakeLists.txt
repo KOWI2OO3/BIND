@@ -7,7 +7,9 @@ add_library(bind
     src/bufferhelper.c
 )
 
-target_link_libraries(bind PRIVATE m)
+if (UNIX)
+    target_link_libraries(bind PRIVATE m)
+endif (UNIX)
 
 target_include_directories(bind PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
