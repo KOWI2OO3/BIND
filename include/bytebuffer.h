@@ -33,9 +33,34 @@ void writeByte(ByteWriter* writer, byte value);
  */
 uint64_t getLength(ByteWriter* writer);
 
+/**
+ * Creates a reader from a byte writer
+ * NOTE: this does not dispose the writer, for that call destroyWriter
+ */
 ByteReader* createReader(ByteWriter* writer);
+
+/**
+ * Creates a reader from a pointer to a byte array with a specified length
+ */
 ByteReader* createReaderFromPointer(byte* ptr, uint64_t length);
+
+/**
+ * Destroys a reader and free's up the data used
+ * NOTE: this includes the underlying ByteBuffer
+ */
 void destroyReader(ByteReader* reader);
+
+/**
+ * Checkes whether the reader has a next byte to read
+ */
 bool hasNext(ByteReader* reader);
+
+/**
+ * Reads a single bit from the reader
+ */
 bool readBit(ByteReader* reader);
+
+/**
+ * Reads a single byte from the reader
+ */
 byte readByte(ByteReader* reader);

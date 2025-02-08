@@ -4,7 +4,7 @@ project(bind VERSION 0.1.0 LANGUAGES C)
 add_library(bind 
     src/bind.c
     src/bytebuffer.c
-    src/bytebuffer.h
+    src/bufferhelper.c
 )
 
 target_include_directories(bind PUBLIC ${CMAKE_SOURCE_DIR}/include)
