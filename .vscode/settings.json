@@ -10,6 +10,7 @@
         "bindreader.h": "c",
         "tuple": "c",
         "utility": "c",
-        "common.h": "c"
+        "common.h": "c",
+        "hashmap.h": "c"
     }
 }
