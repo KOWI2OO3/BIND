@@ -58,6 +58,9 @@ void writeElement(ByteWriter* writer, BindElement element) {
             writeByte(writer, element.type);
             writeArray(writer, element);
             break;
+        case B_NULL:
+            writeByte(writer, element.type);
+            break;
         default:
             break;
     }

@@ -52,6 +52,8 @@ BindElement readElement(ByteReader* reader) {
             return readPrimitive(reader, parsePrimitiveType(rawType));
         case ARRAY:
             return readArray(reader);
+        case B_NULL:
+            return createNullElement();
         default:
             break;
     }
