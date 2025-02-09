@@ -4,35 +4,23 @@ void writePrimitive(ByteWriter* writer, PrimitiveType type, void* data) {
     switch (type)
     {
         case _byte:
-        {
             writeByte(writer, *((byte*)data));
             break;
-        }
         case _bool:
-        {
             writeBoolean(writer, *((bool*)data));
             break;
-        }
         case _int:
-        {
             writeVarInt(writer, *((uint64_t*)data));
             break;
-        }
         case _float:
-        {
             writeFloat(writer, *((float*)data));
             break;
-        }
         case _double:
-        {
             writeDouble(writer, *((double*)data));
             break;
-        }
         case _string:
-        {
             writeString(writer, (char*)data);
             break;
-        }
         default:
             break;
     }
