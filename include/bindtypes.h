@@ -65,7 +65,6 @@ double asDouble(BindElement element);
  */
 char* asString(BindElement element);
 
-
 BindElement createArrayElement(BindElement* data, uint64_t length);
 BindElement createEmptyArrayElement();
 bool appendElementToArray(BindElement array, BindElement element);
