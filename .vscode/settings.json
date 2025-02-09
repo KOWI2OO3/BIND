@@ -4,6 +4,12 @@
         "stdio.h": "c",
         "bytebuffer.h": "c",
         "assert.h": "c",
-        "bufferhelper.h": "c"
+        "bufferhelper.h": "c",
+        "bind.h": "c",
+        "bindtypes.h": "c",
+        "bindreader.h": "c",
+        "tuple": "c",
+        "utility": "c",
+        "common.h": "c"
     }
 }

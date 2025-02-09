@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.10)
 project(bind VERSION 0.1.0 LANGUAGES C)
 
 add_library(bind 
-    src/bind.c
     src/bytebuffer.c
     src/bufferhelper.c
+    src/bindtypes.c
+    src/bindwriter.c
+    src/bindreader.c
 )
 
 if (UNIX)
