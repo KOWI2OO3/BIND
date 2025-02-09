@@ -143,6 +143,8 @@ char* asString(BindElement element) {
 
 #pragma endregion
 
+// Array logic
+#pragma region 
 typedef struct {
     uint64_t length;
     BindElement* head;
@@ -240,3 +242,5 @@ void destroyElement(BindElement element) {
     if(element.data != NULL)
         free(element.data);
 }
+
+#pragma endregion
