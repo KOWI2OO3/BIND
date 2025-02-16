@@ -15,7 +15,7 @@ typedef struct Entry {
 
 typedef struct Node {
     struct Node* next;
-    char key[];
+    char* key;
 } Node;
 
 typedef struct HashMap HashMap;

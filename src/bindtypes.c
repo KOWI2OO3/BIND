@@ -237,11 +237,7 @@ BindElement createObjectElement() {
 
 void addElementToObject(BindElement bindObject, char* key, BindElement element) {
     if(bindObject.type != OBJECT) return;
-    
-    char* hKey = (char*)malloc(strlen(key) + 1);
-    strcpy(hKey, key);
-
-    insertData(bindObject.data, hKey, element);
+    insertData(bindObject.data, key, element);
 }
 
 BindElement getElementByKey(BindElement bindObject, char* key) {
@@ -255,17 +251,17 @@ void iterateObject(BindElement bindObject, ObjectIterable iterableCallback) {
 }
 
 ObjectEntry* getEntries(BindElement bindObject) {
-    if(bindObject.type != OBJECT) return;
+    if(bindObject.type != OBJECT) return NULL;
     Node* listedNode = listKeys(bindObject.data);
     ObjectEntry* prev = NULL;
     while(listedNode != NULL) 
     {
-        ObjectEntry* entry = malloc(sizeof(ObjectEntry));
+        ObjectEntry* entry = (ObjectEntry*)malloc(sizeof(ObjectEntry));
+        if(entry == NULL) return NULL;
+
         entry->key = listedNode->key;
         entry->data = getData(bindObject.data, entry->key);
-
-        if(prev != NULL)
-            entry->next = prev;
+        entry->next = prev;
         
         prev = entry;
 
@@ -297,7 +293,7 @@ void removeElementByKey(BindElement bindObject, char* key) {
 }
 
 bool containsKey(BindElement bindObject, char* key) {
-    if(bindObject.type != OBJECT) return;
+    if(bindObject.type != OBJECT) return false;
     return hasKey(bindObject.data, key);
 }
 
@@ -308,8 +304,9 @@ void destroyElement(BindElement element) {
     {
         case OBJECT:
         {
-            destroyHashMap(element.data, destroyElement);
-            break;
+            if(element.data != NULL)
+                destroyHashMap(element.data, destroyElement);
+            return;
         }
         case ARRAY:
         {

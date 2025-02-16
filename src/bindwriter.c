@@ -38,15 +38,19 @@ void writeArray(ByteWriter* writer, BindElement array) {
 void writeObject(ByteWriter* writer, BindElement bindObject) {
     ObjectEntry* entry = getEntries(bindObject);
     int count = 0;
-    for(ObjectEntry* i = entry; i != NULL; i = i->next) {
+    ObjectEntry* i = entry;
+    while(i != NULL) {
         count++;
+        i = i->next;
     }
+    
     writeVarInt(writer, count);
 
     for(ObjectEntry* i = entry; i != NULL; i = i->next) {
         writeString(writer, i->key);
         writeElement(writer, i->data);
     }
+    destroyObjectEntries(entry);
 }
 
 void writeElement(ByteWriter* writer, BindElement element) {

@@ -9,9 +9,11 @@ typedef struct HashMap {
 } HashMap;
 
 uint64_t hash(char* key) {
+    if(key == NULL) return 0;
+
     uint64_t result = 0;
 
-    for(char* ptr = key; *ptr = '\0'; ptr++)
+    for(char* ptr = key; *ptr != '\0'; ptr++)
         result += (uint64_t)*ptr;
 
     return result;
@@ -120,7 +122,7 @@ void removeData(HashMap* hashmap, char* key, DestroyDataCallback callback) {
 }
 
 void clearHashMap(HashMap* hashmap, DestroyDataCallback callback) {
-    if(hashmap == NULL | callback == NULL) return;
+    if(hashmap == NULL || callback == NULL) return;
 
     for(uint32_t i = 0; i < hashmap->key_space; i++) {
         Entry* entry = hashmap->buckets[i];
@@ -156,7 +158,11 @@ Node* listKeys(HashMap* hashmap) {
 
     for(uint32_t i = 0; i < hashmap->key_space; i++) {
         for(Entry* entry = hashmap->buckets[i]; entry != NULL; entry = entry->next) {
-            Node* tmp = malloc(sizeof(Node) + strlen(entry->key));
+            Node* tmp = malloc(sizeof(Node));
+            if(tmp == NULL) continue;
+
+            tmp->key = (char*)calloc(strlen(entry->key) + 1, sizeof(char));
+
             tmp->next = node;
             strcmp(tmp->key, entry->key);
             node = tmp;
@@ -170,7 +176,7 @@ void freeNode(Node* node) {
     while(node != NULL) {
         free(node->key);
         Node* tmp = node;
-        node = node->key;
+        node = node->next;
         free(tmp);
     }
 }
