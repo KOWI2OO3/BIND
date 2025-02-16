@@ -86,7 +86,7 @@ BindElement createDoubleElement(double value) {
 }
 
 BindElement createStringElement(char* value) {
-    char* data = (char*) malloc(sizeof(char) * strlen(value));
+    char* data = (char*) malloc(strlen(value) + 1);
     strcpy(data, value);
     return createPrimitiveElement(_string, data);
 }

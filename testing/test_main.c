@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 #include "bind.h"
 
 void MyTest() {
@@ -88,6 +89,21 @@ void BufferHelperPrimitiveDouble() {
     destroyReader(reader);
 }
 
+void BufferHelperPrimitiveString() { 
+    ByteWriter* writer = createByteWriter(20);
+    writeString(writer, "Hello World");
+    writeString(writer, "Hello World");
+    
+    ByteReader* reader = createReader(writer);
+    destroyWriter(writer);
+
+    char* result = readString(reader);
+    assert(strcmp(result, "Hello World") == 0);
+    free(result);
+    
+    destroyReader(reader);
+}
+
 void BindBoolElement() {
     ByteWriter* writer = createByteWriter(20);
 
@@ -169,6 +185,7 @@ int main() {
     BufferHelperPrimitiveBool();
     BufferHelperPrimitiveFloat();
     BufferHelperPrimitiveDouble();
+    BufferHelperPrimitiveString();
 
     BindBoolElement();
     BindDoubleElement();

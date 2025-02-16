@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "bindreader.h"
 
 BindElement readPrimitive(ByteReader* reader, PrimitiveType type) {
