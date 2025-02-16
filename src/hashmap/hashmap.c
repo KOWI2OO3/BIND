@@ -164,7 +164,7 @@ Node* listKeys(HashMap* hashmap) {
             tmp->key = (char*)calloc(strlen(entry->key) + 1, sizeof(char));
 
             tmp->next = node;
-            strcmp(tmp->key, entry->key);
+            strcpy(tmp->key, entry->key);
             node = tmp;
         }
     }
