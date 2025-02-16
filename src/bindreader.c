@@ -43,6 +43,18 @@ BindElement readArray(ByteReader* reader) {
     return result;
 }
 
+BindElement readObject(ByteReader* reader) {
+    uint64_t count = readVarInt(reader);
+    BindElement result = createObjectElement();
+    while(count--) {
+        char* key = readString(reader);
+        BindElement element = readElement(reader);
+        addElementToObject(result, key, element);
+        free(key);
+    }
+    return result;
+}
+
 BindElement readElement(ByteReader* reader) {
     byte rawType = readByte(reader);
     BindType type = parseBindType(rawType);
@@ -52,6 +64,8 @@ BindElement readElement(ByteReader* reader) {
             return readPrimitive(reader, parsePrimitiveType(rawType));
         case ARRAY:
             return readArray(reader);
+        case OBJECT:
+            return readObject(reader);
         case B_NULL:
             return createNullElement();
         default:

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "bindwriter.h"
 
 void writePrimitive(ByteWriter* writer, PrimitiveType type, void* data) {
@@ -34,6 +35,20 @@ void writeArray(ByteWriter* writer, BindElement array) {
         writeElement(writer, *(head + i));
 }
 
+void writeObject(ByteWriter* writer, BindElement bindObject) {
+    ObjectEntry* entry = getEntries(bindObject);
+    int count = 0;
+    for(ObjectEntry* i = entry; i != NULL; i = i->next) {
+        count++;
+    }
+    writeVarInt(writer, count);
+
+    for(ObjectEntry* i = entry; i != NULL; i = i->next) {
+        writeString(writer, i->key);
+        writeElement(writer, i->data);
+    }
+}
+
 void writeElement(ByteWriter* writer, BindElement element) {
     BindType type = getElementType(element);
     switch (type)
@@ -45,6 +60,10 @@ void writeElement(ByteWriter* writer, BindElement element) {
         case ARRAY:
             writeByte(writer, element.type);
             writeArray(writer, element);
+            break;
+        case OBJECT:
+            writeByte(writer, element.type);
+            writeObject(writer, element);
             break;
         case B_NULL:
             writeByte(writer, element.type);

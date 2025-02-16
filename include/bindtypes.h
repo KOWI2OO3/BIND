@@ -88,5 +88,6 @@ void iterateObject(BindElement bindObject, ObjectIterable iterableCallback);
 ObjectEntry* getEntries(BindElement bindObject);
 void destroyObjectEntries(ObjectEntry* entries);
 void removeElementByKey(BindElement bindObject, char* key);
+bool containsKey(BindElement bindObject, char* key);
 
 void destroyElement(BindElement element);

@@ -296,6 +296,11 @@ void removeElementByKey(BindElement bindObject, char* key) {
     removeData(bindObject.data, key, destroyElement);
 }
 
+bool containsKey(BindElement bindObject, char* key) {
+    if(bindObject.type != OBJECT) return;
+    return hasKey(bindObject.data, key);
+}
+
 #pragma endregion
 
 void destroyElement(BindElement element) {
