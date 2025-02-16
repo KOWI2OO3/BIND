@@ -2,7 +2,7 @@
 #include <string.h>
 #include "hashmap.h"
 
-typedef struct {
+typedef struct HashMap {
     uint32_t key_space;
     hashFunction hash_function;
     Entry* buckets[];
@@ -46,7 +46,7 @@ Entry* getEntry(HashMap* hashmap, char* key) {
     return entry;
 }
 
-void insertData(HashMap* hashmap, char* key, void* data) {
+void insertData(HashMap* hashmap, char* key, BindElement data) {
     if(hashmap == NULL || key == NULL) return;
 
     uint64_t hash = hashmap->hash_function(key);
@@ -74,10 +74,10 @@ void insertData(HashMap* hashmap, char* key, void* data) {
     }
 }
 
-void* getData(HashMap* hashmap, char* key) {
-    if(hashmap == NULL || key == NULL) return NULL;
+BindElement getData(HashMap* hashmap, char* key) {
+    if(hashmap == NULL || key == NULL) return createNullElement();
     Entry* entry = getEntry(hashmap, key);
-    return entry != NULL ? entry->data : NULL;
+    return entry != NULL ? entry->data : createNullElement();
 }
 
 void iterate(HashMap* hashmap, IteratorCallback callback) {
@@ -144,13 +144,13 @@ void destroyHashMap(HashMap* hashmap, DestroyDataCallback callback) {
 }
 
 bool hasKey(HashMap* hashmap, char* key) {
-    if(hashmap == NULL || key == NULL) return NULL;
+    if(hashmap == NULL || key == NULL) return false;
     Entry* entry = getEntry(hashmap, key);
     return entry != NULL;
 }
 
 Node* listKeys(HashMap* hashmap) {
-    if(hashmap == NULL) return;
+    if(hashmap == NULL) return NULL;
 
     Node* node = NULL;
 
@@ -164,4 +164,13 @@ Node* listKeys(HashMap* hashmap) {
     }
 
     return node;
+}
+
+void freeNode(Node* node) {
+    while(node != NULL) {
+        free(node->key);
+        Node* tmp = node;
+        node = node->key;
+        free(tmp);
+    }
 }

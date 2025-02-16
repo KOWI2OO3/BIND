@@ -7,6 +7,7 @@ add_library(bind
     src/bindtypes.c
     src/bindwriter.c
     src/bindreader.c
+    src/hashmap/hashmap.c
 )
 
 if (UNIX)

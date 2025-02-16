@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "bindtypes.h"
+#include "hashmap/hashmap.h"
 
 BindElement createPrimitiveElement(PrimitiveType type, void* data) {
     BindElement element;
@@ -222,9 +223,89 @@ BindElement getElementAt(BindElement array, uint64_t index) {
     return *(meta->head + index);
 }
 
+#pragma endregion
+
+// Object Logic
+#pragma region 
+
+BindElement createObjectElement() {
+    BindElement result;
+    result.type = OBJECT;
+    result.data = createHashMap(32);
+    return result;
+}
+
+void addElementToObject(BindElement bindObject, char* key, BindElement element) {
+    if(bindObject.type != OBJECT) return;
+    
+    char* hKey = (char*)malloc(strlen(key) + 1);
+    strcpy(hKey, key);
+
+    insertData(bindObject.data, hKey, element);
+}
+
+BindElement getElementByKey(BindElement bindObject, char* key) {
+    if(bindObject.type != OBJECT) return createNullElement();
+    return getData(bindObject.data, key);
+}
+
+void iterateObject(BindElement bindObject, ObjectIterable iterableCallback) {
+    if(bindObject.type != OBJECT) return;
+    iterate(bindObject.data, iterableCallback);
+}
+
+ObjectEntry* getEntries(BindElement bindObject) {
+    if(bindObject.type != OBJECT) return;
+    Node* listedNode = listKeys(bindObject.data);
+    ObjectEntry* prev = NULL;
+    while(listedNode != NULL) 
+    {
+        ObjectEntry* entry = malloc(sizeof(ObjectEntry));
+        entry->key = listedNode->key;
+        entry->data = getData(bindObject.data, entry->key);
+
+        if(prev != NULL)
+            entry->next = prev;
+        
+        prev = entry;
+
+        Node* tmp = listedNode;
+        listedNode = tmp->next;
+        free(tmp);
+    }
+    return prev;
+}
+
+void destroyObjectEntries(ObjectEntry* entries) {
+    while(entries != NULL) {
+        free(entries->key);
+        
+        ObjectEntry* tmp = entries;
+        entries = entries->next;
+        free(tmp);
+    }
+}
+
+HashMap* getDataTable(BindElement bindObject) {
+    if(bindObject.type != OBJECT) return NULL;
+    return bindObject.data;
+}
+
+void removeElementByKey(BindElement bindObject, char* key) {
+    if(bindObject.type != OBJECT) return;
+    removeData(bindObject.data, key, destroyElement);
+}
+
+#pragma endregion
+
 void destroyElement(BindElement element) {
     switch (element.type)
     {
+        case OBJECT:
+        {
+            destroyHashMap(element.data, destroyElement);
+            break;
+        }
         case ARRAY:
         {
             ArrayMeta* meta = getArrayMeta(element);
@@ -242,5 +323,3 @@ void destroyElement(BindElement element) {
     if(element.data != NULL)
         free(element.data);
 }
-
-#pragma endregion
