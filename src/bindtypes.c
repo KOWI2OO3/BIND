@@ -137,7 +137,7 @@ char* asString(BindElement element) {
     if(!isPrimitive(element.type) || getPrimitiveType(element) != _string)
         return "";
     char* elementData = (char*)element.data;
-    char* result = malloc(strlen(elementData));
+    char* result = malloc(strlen(elementData) + 1);
     strcpy(result, elementData);
     return result;
 }
