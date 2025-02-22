@@ -22,7 +22,14 @@ typedef struct {
     void* data;
 } BindElement;
 
+typedef struct ObjectEntry {
+    char* key;
+    BindElement data;
+    struct ObjectEntry* next;
+} ObjectEntry;
+
 typedef void (*Iterable)(BindElement element);
+typedef void (*ObjectIterable)(char* key, BindElement element);
 
 BindType parseBindType(byte type);
 PrimitiveType parsePrimitiveType(byte type);
@@ -73,5 +80,14 @@ uint64_t getArrayLength(BindElement array);
 BindElement* getArrayHead(BindElement array); 
 void iterateArray(BindElement array, Iterable callback);
 BindElement getElementAt(BindElement array, uint64_t index);
+
+BindElement createObjectElement();
+void addElementToObject(BindElement bindObject, char* key, BindElement element);
+BindElement getElementByKey(BindElement bindObject, char* key);
+void iterateObject(BindElement bindObject, ObjectIterable iterableCallback);
+ObjectEntry* getEntries(BindElement bindObject);
+void destroyObjectEntries(ObjectEntry* entries);
+void removeElementByKey(BindElement bindObject, char* key);
+bool containsKey(BindElement bindObject, char* key);
 
 void destroyElement(BindElement element);

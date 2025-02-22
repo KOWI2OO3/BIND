@@ -1,5 +1,7 @@
 #include <assert.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "bind.h"
 
 void MyTest() {
@@ -83,8 +85,22 @@ void BufferHelperPrimitiveDouble() {
     double epsilon = 1e-5;
 
     double result = readDouble(reader);
-    printf("%lf", result);
     assert(5.3e5 - epsilon < result && result < 5.3e5 + epsilon);
+    destroyReader(reader);
+}
+
+void BufferHelperPrimitiveString() { 
+    ByteWriter* writer = createByteWriter(20);
+    writeString(writer, "Hello World");
+    writeString(writer, "Hello World");
+    
+    ByteReader* reader = createReader(writer);
+    destroyWriter(writer);
+
+    char* result = readString(reader);
+    assert(strcmp(result, "Hello World") == 0);
+    free(result);
+    
     destroyReader(reader);
 }
 
@@ -160,6 +176,32 @@ void BindArrayTest() {
     destroyReader(reader);
 }
 
+void BindObjectTest() {
+    ByteWriter* writer = createByteWriter(20);
+
+    BindElement object = createObjectElement();
+    BindElement name = createStringElement("[insert name]");
+    BindElement age = createIntElement(32);
+    addElementToObject(object, "name", name);
+    addElementToObject(object, "age", age);
+
+    writeElement(writer, object);
+    destroyElement(object);
+
+    ByteReader* reader = createReader(writer);
+    destroyWriter(writer);
+    
+    object = readElement(reader);
+
+    assert(containsKey(object, "name"));
+    name = getElementByKey(object, "name");
+    char* s = asString(name);
+    assert(strcmp(s, "[insert name]") == 0);
+    free(s);
+    
+    destroyElement(object);
+    destroyReader(reader);
+}
 
 int main() {
     MyTest();
@@ -169,10 +211,12 @@ int main() {
     BufferHelperPrimitiveBool();
     BufferHelperPrimitiveFloat();
     BufferHelperPrimitiveDouble();
+    BufferHelperPrimitiveString();
 
     BindBoolElement();
     BindDoubleElement();
     BindArrayTest();
+    BindObjectTest();
     
     return 0;
 }

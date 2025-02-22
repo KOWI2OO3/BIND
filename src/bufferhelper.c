@@ -88,6 +88,7 @@ void writeString(ByteWriter* writer, char* s) {
        writeByte(writer, *s);
        s++;
    }
+   writeByte(writer, '\0');
 }
 
 char* readString(ByteReader* reader) {
