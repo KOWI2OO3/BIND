@@ -1,6 +1,9 @@
 #pragma once
 
+#ifndef __cplusplus
 typedef enum { false, true } bool;
+#endif
+
 typedef unsigned char byte;
 
 typedef unsigned char uint8_t;

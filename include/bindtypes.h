@@ -1,6 +1,10 @@
 #pragma once
 #include "common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     PRIMITIVE,
     OBJECT,
@@ -91,3 +95,7 @@ void removeElementByKey(BindElement bindObject, char* key);
 bool containsKey(BindElement bindObject, char* key);
 
 void destroyElement(BindElement element);
+
+#ifdef __cplusplus
+}
+#endif
