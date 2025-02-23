@@ -2,10 +2,12 @@
 
 #include "common.h"
 
-struct ByteBuffer;
-
 typedef struct ByteBuffer ByteWriter;
 typedef struct ByteBuffer ByteReader;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * Create a byte writer of the specified length in bytes
@@ -64,3 +66,7 @@ bool readBit(ByteReader* reader);
  * Reads a single byte from the reader
  */
 byte readByte(ByteReader* reader);
+
+#ifdef __cplusplus
+}
+#endif

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(bind VERSION 0.1.0 LANGUAGES C)
 
-add_library(bind 
+add_library(bind STATIC 
     src/bytebuffer.c
     src/bufferhelper.c
     src/bindtypes.c
@@ -14,7 +14,13 @@ if (UNIX)
     target_link_libraries(bind PRIVATE m)
 endif (UNIX)
 
-target_include_directories(bind PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(bind PUBLIC "include/")
+# target_compile_definitions(bind PRIVATE BIND_EXPORTS)
+
+# For Windows, export the symbols
+if(WIN32)
+    set_target_properties(bind PROPERTIES PREFIX "" SUFFIX ".lib")
+endif()
 
 include(CTest)
 enable_testing()
